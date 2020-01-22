@@ -1,31 +1,114 @@
-﻿@{
+﻿@model HomeExpense.ViewModel.Dashboard
+
+@{
     ViewBag.Title = "Home Page";
 }
-
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
-
 <div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+    <h2>Dashboard</h2>
+</div>
+<div class="row">
+    <div class="jumbotron col-md-3 text-center border border-danger">
+        <h5 class="text text-danger">Total Expense</h5>
+        <h4 class="text text-danger">Rs. @Model.TotalExpense</h4>
+        @Html.ActionLink("Learn More", "Details", "Expenses", "", new { @class = "btn btn-default" })
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+    <div class="col-md-1"></div>
+    <div class="jumbotron col-md-3 text-center  border border-primary">
+        <h5 class="text text-primary">Total Income</h5>
+        <h4 class="text text-primary">Rs. @Model.TotalIncome</h4>
+        @Html.ActionLink("Learn More", "Index", "Incomes", "", new { @class = "btn btn-default" })
     </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+    <div class="col-md-1"></div>
+    <div class="jumbotron col-md-3 text-center border border-success">
+        <h5 class="text text-success">Total Savings</h5>
+        <h4 class="text text-success">rs. @Model.TotalSavings</h4>
+        @Html.ActionLink("Learn More", "Index", "Expenses", "", new { @class = "btn btn-default" })
     </div>
 </div>
+<div class="row">
+    <h2>Expenses</h2>
+    @*<div class="col-md-4">
+        <input id="txtDate" class="form-control" type="text" placeholder="Search by date" />
+    </div>*@
+   
+        @*<div class="col-md-4">
+            @Html.DropDownList("Month", new SelectList(Model.Months), "Search by Month", new { @class = "form-control", id = "ddlMonth" })
+        </div>*@
+    
+        <table class="table table-responsive table-bordered" id="tblData">
+            <thead>
+                <tr>
+                    <th>
+                        Category
+                    </th>
+                    <th>
+                        Item
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th>
+                        NepaliDate
+                    </th>
+                    <th>Month</th>
+                    <th>Short Note</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Expenses.ToList())
+                {
+                    <tr>
+                        <td>
+                            @Model.Categories.ToList().FirstOrDefault(m => m.Id == item.CategoryId).Name
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ItemName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NepaliDate)
+                        </td>
+                        <th>@Model.Months.ToList()[item.MonthIndex - 1]</th>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ShortNote)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+<link href="~/Content/jquery.dataTables.css" rel="stylesheet" />
+<link href="~/Content/nepali.datepicker.v2.2.min.css" rel="stylesheet" />
+@section Scripts{
+    <script src="~/Scripts/nepali.datepicker.v2.2.min.js"></script>
+    <script src="~/Scripts/jquery.dataTables.js"></script>
+    <script>
+     
+        $(document).ready(function () {
+        var table=$('#tblData').DataTable({
+                //dom: 'Bfrtip',
+            buttons: ['copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5']
+            });
+
+          //  $("#txtDate").nepaliDatePicker();
+
+            //$("#txtDate").keyup(function () {
+            //    table.columns(3)
+            //        .search(this.value)
+            //        .draw();
+            //})
+
+            $("#ddlMonth").change(function () {
+                table.columns(4)
+                    .search(this.value)
+                    .draw();
+            })
+        });
+
+       
+
+    </script>
+}

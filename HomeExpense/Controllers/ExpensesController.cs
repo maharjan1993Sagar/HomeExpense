@@ -33,8 +33,15 @@ namespace HomeExpense.Controllers
                                              Expenses = g.Select(m => m).ToList(),
                                              
                                          }).ToList();
-            cat[0].Categories = db.Categories;
-            return View(cat);
+            if (cat.Count != 0)
+            {
+                cat[0].Categories = db.Categories;
+               
+            }
+           
+                return View(cat.AsEnumerable());
+           
+           
         }
 
         // GET: Expenses/Create

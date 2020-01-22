@@ -1,4 +1,4 @@
-﻿@model List<HomeExpense.ViewModel.CategoryExpense>
+﻿@model IEnumerable<HomeExpense.ViewModel.CategoryExpense>
 @{
     ViewBag.Title = "Details";
 }
@@ -13,10 +13,12 @@
 <div class="row">
     @foreach (var item in Model)
     {
-        <div class="col-md-4" id="divData">
-            <button class="btn btn-info"> @Model[0].Categories.FirstOrDefault(m => m.Id == item.CategoryId).Name</button>
-            <label>Rs. @item.Expenses.Sum(m => m.Price)</label>
+        <div class="col-md-12" id="divData">
+            <label> @Model.First().Categories.FirstOrDefault(m => m.Id == item.CategoryId).Name:</label>
+            <label class="text-primary">Rs. @item.Expenses.Sum(m => m.Price)</label>
+            <hr style="height:2px;color:#000;background-color:#000;"/>
         </div>
+      
     }
 </div>
 @section scripts{
