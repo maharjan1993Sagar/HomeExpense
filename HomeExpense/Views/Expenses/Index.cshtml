@@ -1,0 +1,67 @@
+﻿@model IEnumerable<HomeExpense.Models.Expense>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Expense</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", "", new { @class = "btn btn-primary" })
+</p>
+<table class="table table-responsive table-bordered" id="tblData">
+    <thead>
+        <tr>
+            <th>
+                Category
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ItemName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.NepaliDate)
+            </th>
+            <th>Short Note</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ItemName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NepaliDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShortNote)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<link href="~/Content/jquery.dataTables.css" rel="stylesheet" />
+@section Scripts{
+    <script src="~/Scripts/jquery.dataTables.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#tblData').DataTable();
+        });
+    </script>
+}

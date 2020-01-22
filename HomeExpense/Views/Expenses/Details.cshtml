@@ -1,0 +1,44 @@
+﻿@model List<HomeExpense.ViewModel.CategoryExpense>
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Expense By Category</h2>
+<div class="row">
+    <div class="col-md-4">
+        <input id="txtSearch" class="form-control" type="text" placeholder="Search..."/>
+    </div>
+</div>
+<br />
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4" id="divData">
+            <button class="btn btn-info"> @Model[0].Categories.FirstOrDefault(m => m.Id == item.CategoryId).Name</button>
+            <label>Rs. @item.Expenses.Sum(m => m.Price)</label>
+        </div>
+    }
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var $divDatas = $("body #divData");
+
+            $("#txtSearch").keyup(function () {
+                var txt = $(this).val();
+                $divDatas.each(function () {
+                   
+                    if ($(this).text().toUpperCase().indexOf(txt.toUpperCase()) != -1) {
+                        $(this).show();
+                    }
+                    else {
+                        $(this).hide();
+                    }
+                });
+            })
+           
+        })
+      
+    </script>
+    }
+
